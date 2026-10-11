@@ -122,7 +122,7 @@ export default async function Home() {
             <div className="panel step">
               <div className="num">03</div>
               <h3>Crea o únete a un equipo</h3>
-              <p>El capitán crea el equipo y comparte un código. Con 5 jugadores (más 2 suplentes opcionales) ya están dentro.</p>
+              <p>El capitán paga la inscripción, recibe un código y crea el equipo. Luego comparte el código del equipo con sus compañeros (5 jugadores + 2 suplentes opcionales).</p>
             </div>
           </div>
         </div>

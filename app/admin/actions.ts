@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getCurrentUser } from '@/lib/auth';
 import { q } from '@/lib/db';
 import { generateBracket, recomputeBracket } from '@/lib/bracket';
-import { getTeams, MIN_ROSTER, removeFromTeam, setSetting } from '@/lib/data';
+import { getTeams, MIN_ROSTER, newRegCode, removeFromTeam, setSetting } from '@/lib/data';
 
 function back(kind: 'ok' | 'err', msg: string, hash = ''): never {
   revalidatePath('/', 'layout');
@@ -79,6 +79,7 @@ export async function deleteTeam(fd: FormData) {
   const [{ n }] = await q('select count(*)::int as n from matches where team1_id=$1 or team2_id=$1', [id]);
   if (n > 0) back('err', 'Ese equipo ya está en el cuadro. Elimina el cuadro primero.', '#equipos');
   await q('update users set team_id=null where team_id=$1', [id]);
+  await q('update reg_codes set team_id=null, used_at=null where team_id=$1', [id]); // el código queda libre otra vez
   await q('delete from teams where id=$1', [id]);
   back('ok', 'Equipo eliminado.', '#equipos');
 }
@@ -97,4 +98,24 @@ export async function adminDeletePlayer(fd: FormData) {
   await removeFromTeam(id);
   await q('delete from users where id=$1', [id]);
   back('ok', 'Jugador eliminado. Si vuelve a entrar con Discord, empieza con un perfil nuevo.', '#jugadores');
+}
+
+export async function createRegCode(fd: FormData) {
+  await requireAdmin();
+  const note = String(fd.get('note') ?? '').trim().slice(0, 80) || null;
+  let code = newRegCode();
+  for (let i = 0; i < 5; i++) {
+    const r = await q('insert into reg_codes (code, note) values ($1,$2) on conflict do nothing returning code', [code, note]);
+    if (r.length) break;
+    code = newRegCode();
+  }
+  back('ok', `Código creado: ${code}. Envíaselo a quien pagó.`, '#codigos');
+}
+
+export async function deleteRegCode(fd: FormData) {
+  await requireAdmin();
+  const code = String(fd.get('code') ?? '');
+  const r = await q('delete from reg_codes where code=$1 and team_id is null returning code', [code]);
+  if (!r.length) back('err', 'Ese código ya fue usado; elimina el equipo primero si quieres liberarlo.', '#codigos');
+  back('ok', 'Código eliminado.', '#codigos');
 }

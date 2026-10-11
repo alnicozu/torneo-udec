@@ -13,7 +13,7 @@ export default async function InscripcionPage() {
         <h1 className="title">Inscribe a tu equipo</h1>
         <p className="subtitle">
           Escríbenos por WhatsApp o Instagram con el nombre de tu equipo y los Riot ID de los 5 jugadores (más suplentes, si tienen).
-          Te respondemos con los datos para pagar la inscripción ($7.500 por equipo) y confirmarte el cupo.
+          Te respondemos con los datos para pagar la inscripción ($7.500 por equipo). Cuando pagues, te enviamos un <b>código de inscripción</b> para crear tu equipo en la página.
         </p>
       </div>
 

@@ -167,3 +167,20 @@ export async function getAllUsers(): Promise<(User & { team_name: string | null;
      order by t.name nulls last, lower(u.name)`
   );
 }
+
+// ---------- Códigos de inscripción (se entregan a quien pagó) ----------
+export type RegCode = { code: string; note: string | null; team_id: number | null; team_name: string | null; created_at: string; used_at: string | null };
+
+export function newRegCode() {
+  return `${randomCode(4)}-${randomCode(4)}`;
+}
+export function normalizeRegCode(v: string) {
+  const c = v.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  return c.length === 8 ? `${c.slice(0, 4)}-${c.slice(4)}` : c;
+}
+export async function getRegCodes(): Promise<RegCode[]> {
+  return q(
+    `select c.*, t.name as team_name from reg_codes c left join teams t on t.id = c.team_id
+     order by (c.team_id is not null), c.created_at desc`
+  );
+}

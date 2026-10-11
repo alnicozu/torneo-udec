@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { roundName } from '@/lib/bracket';
-import { getAllUsers, getMatches, getSettings, getTeams, MIN_ROSTER } from '@/lib/data';
-import { adminDeletePlayer, adminRemoveFromTeam, createBracket, deleteBracket, deleteTeam, saveMatch, saveSettings } from './actions';
+import { getAllUsers, getMatches, getRegCodes, getSettings, getTeams, MIN_ROSTER } from '@/lib/data';
+import { adminDeletePlayer, adminRemoveFromTeam, createRegCode, deleteRegCode, createBracket, deleteBracket, deleteTeam, saveMatch, saveSettings } from './actions';
 import ConfirmButton from '@/components/ConfirmButton';
 import Avatar from '@/components/Avatar';
 
@@ -12,7 +12,8 @@ export const metadata = { title: 'Admin · Torneo 5vs5 UdeC 2026' };
 export default async function AdminPage({ searchParams }: { searchParams: { ok?: string; err?: string } }) {
   const user = await getCurrentUser();
   if (!user?.isAdmin) redirect('/');
-  const [teams, matches, settings, users] = await Promise.all([getTeams(), getMatches(), getSettings(), getAllUsers()]);
+  const [teams, matches, settings, users, codes] = await Promise.all([getTeams(), getMatches(), getSettings(), getAllUsers(), getRegCodes()]);
+  const freeCodes = codes.filter((c) => !c.team_id).length;
   const teamMap = new Map(teams.map((t) => [t.id, t]));
   const rounds = matches.length ? Math.max(...matches.map((m) => m.round)) : 0;
   const full = teams.filter((t) => t.members.length >= MIN_ROSTER).length;
@@ -24,6 +25,7 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
         <div className="eyebrow">Organización</div>
         <h1 className="title">Panel de admin</h1>
         <div className="tabs-inline" style={{ marginTop: 16 }}>
+          <a className="btn ghost sm" href="#codigos">Códigos</a>
           <a className="btn ghost sm" href="#cuadro">Cuadro</a>
           <a className="btn ghost sm" href="#partidos">Resultados</a>
           <a className="btn ghost sm" href="#equipos">Equipos</a>
@@ -34,6 +36,43 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
 
       {searchParams.ok && <div className="alert ok">{searchParams.ok}</div>}
       {searchParams.err && <div className="alert err">{searchParams.err}</div>}
+
+      <section id="codigos" className="panel pad" style={{ scrollMarginTop: 90, marginBottom: 16 }}>
+        <h2 className="section-title" style={{ fontSize: 22 }}>Códigos de inscripción</h2>
+        <p className="muted small" style={{ marginTop: 4 }}>
+          Para crear un equipo se necesita uno de estos códigos. Genera uno cuando alguien pague y envíaselo al capitán. Cada código sirve para <b>un solo equipo</b>.
+          Si eliminas un equipo, su código queda libre de nuevo.
+        </p>
+        <form action={createRegCode} className="form-row" style={{ alignItems: 'end', marginTop: 12 }}>
+          <div className="field"><label htmlFor="note">Nota (opcional)</label><input className="input" id="note" name="note" maxLength={80} placeholder="Ej: pagó Juan por WhatsApp" /></div>
+          <div><button className="btn">Generar código</button></div>
+        </form>
+        {codes.length > 0 && (
+          <div className="panel" style={{ overflowX: 'auto', marginTop: 16 }}>
+            <table className="table">
+              <thead><tr><th>Código</th><th>Estado</th><th className="hide-sm">Nota</th><th></th></tr></thead>
+              <tbody>
+                {codes.map((c) => (
+                  <tr key={c.code}>
+                    <td style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 700, letterSpacing: 1, color: c.team_id ? 'var(--muted)' : 'var(--gold)' }}>{c.code}</td>
+                    <td>{c.team_id ? <span className="tag violet">Usado · {c.team_name}</span> : <span className="tag ok">Disponible</span>}</td>
+                    <td className="hide-sm muted small">{c.note ?? ''}</td>
+                    <td style={{ textAlign: 'right' }}>
+                      {!c.team_id && (
+                        <form action={deleteRegCode}>
+                          <input type="hidden" name="code" value={c.code} />
+                          <ConfirmButton message={`¿Eliminar el código ${c.code}?`}>Eliminar</ConfirmButton>
+                        </form>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <p className="muted small" style={{ marginBottom: 0, marginTop: 10 }}>{freeCodes} disponibles · {codes.length - freeCodes} usados</p>
+      </section>
 
       <section id="cuadro" className="panel pad" style={{ scrollMarginTop: 90 }}>
         <h2 className="section-title" style={{ fontSize: 22 }}>Cuadro</h2>

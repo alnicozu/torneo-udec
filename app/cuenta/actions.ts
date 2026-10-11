@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getCurrentUser } from '@/lib/auth';
 import { q } from '@/lib/db';
-import { getSettings, getUser, MAX_ROSTER, randomCode, RANKS, ROLES, removeFromTeam } from '@/lib/data';
+import { getSettings, getUser, MAX_ROSTER, normalizeRegCode, randomCode, RANKS, ROLES, removeFromTeam } from '@/lib/data';
 
 function back(kind: 'ok' | 'err', msg: string): never {
   revalidatePath('/', 'layout');
@@ -39,6 +39,11 @@ export async function createTeam(fd: FormData) {
   if (!s.registration_open || (await bracketLocked())) back('err', 'Las inscripciones están cerradas.');
   if (u.team_id) back('err', 'Ya perteneces a un equipo.');
   if (!u.riot_id) back('err', 'Primero agrega tu Riot ID en tu perfil.');
+  const regCode = normalizeRegCode(String(fd.get('reg_code') ?? ''));
+  if (!regCode) back('err', 'Necesitas un código de inscripción. Se entrega al pagar la inscripción.');
+  const [rc] = await q('select * from reg_codes where code=$1', [regCode]);
+  if (!rc) back('err', 'Ese código de inscripción no existe. Revisa que esté bien escrito.');
+  if (rc.team_id) back('err', 'Ese código de inscripción ya fue usado por otro equipo.');
   const name = String(fd.get('name') ?? '').trim().replace(/\s+/g, ' ');
   const tag = String(fd.get('tag') ?? '').trim().toUpperCase();
   if (name.length < 3 || name.length > 30) back('err', 'El nombre del equipo debe tener entre 3 y 30 caracteres.');
@@ -49,8 +54,14 @@ export async function createTeam(fd: FormData) {
     'insert into teams (name, tag, captain_id, invite_code) values ($1,$2,$3,$4) returning id',
     [name, tag, u.id, randomCode()]
   );
+  // Marca el código como usado (solo si nadie lo usó en el mismo instante).
+  const used = await q('update reg_codes set team_id=$2, used_at=now() where code=$1 and team_id is null returning code', [regCode, t.id]);
+  if (!used.length) {
+    await q('delete from teams where id=$1', [t.id]);
+    back('err', 'Ese código de inscripción ya fue usado por otro equipo.');
+  }
   await q('update users set team_id=$2 where id=$1', [u.id, t.id]);
-  back('ok', `Equipo "${name}" creado. Comparte el código con tus compañeros.`);
+  back('ok', `Equipo "${name}" creado. Comparte el código del equipo con tus compañeros.`);
 }
 
 export async function joinTeam(fd: FormData) {

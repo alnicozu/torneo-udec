@@ -43,6 +43,13 @@ const SCHEMA = [
     scheduled_at text,
     maps text
   )`,
+  `create table if not exists reg_codes (
+    code text primary key,
+    note text,
+    team_id int,
+    created_at timestamptz not null default now(),
+    used_at timestamptz
+  )`,
   `create table if not exists settings (
     key text primary key,
     value text
