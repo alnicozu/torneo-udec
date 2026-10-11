@@ -1,0 +1,26 @@
+{
+  "name": "torneo-udec-2026",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.2.17",
+    "@fontsource-variable/inter": "5.1.1",
+    "@fontsource/anton": "5.1.1",
+    "@neondatabase/serverless": "0.10.4",
+    "next": "14.2.25",
+    "next-auth": "4.24.11",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.10",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "typescript": "5.7.2"
+  }
+}
