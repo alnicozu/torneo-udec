@@ -2,7 +2,7 @@ import type { NextAuthOptions } from 'next-auth';
 import { getServerSession } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { upsertUser } from './data';
+import { setSetting, upsertUser } from './data';
 
 export const discordEnabled = !!(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET);
 
@@ -19,7 +19,16 @@ export function isAdminId(id?: string | null) {
 
 export const authOptions: NextAuthOptions = {
   debug: process.env.NEXTAUTH_DEBUG === '1',
-  logger: { error: (code, meta) => console.error('[next-auth]', code, JSON.stringify(meta)) },
+  logger: {
+    error: (code, meta: any) => {
+      const err = meta?.error ?? meta;
+      const detail = [code, err?.name, err?.message, err?.error, err?.error_description, err?.cause?.message]
+        .filter(Boolean).join(' | ').slice(0, 500);
+      console.error('[next-auth]', detail);
+      // Guarda el último error (sin datos sensibles) para mostrarlo en /ingresar.
+      setSetting('last_auth_error', `${new Date().toISOString()} ${detail}`).catch(() => {});
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET ?? (discordEnabled ? undefined : 'modo-demo-sin-secreto'),
   session: { strategy: 'jwt' },
   pages: { signIn: '/ingresar' },
