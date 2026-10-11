@@ -26,7 +26,10 @@ export const authOptions: NextAuthOptions = {
         .filter(Boolean).join(' | ').slice(0, 500);
       console.error('[next-auth]', detail);
       // Guarda el último error (sin datos sensibles) para mostrarlo en /ingresar.
-      setSetting('last_auth_error', `${new Date().toISOString()} ${detail}`).catch(() => {});
+      // Una cookie antigua (de antes de cambiar NEXTAUTH_SECRET) no es el error que buscamos.
+      if (code !== 'JWT_SESSION_ERROR') {
+        setSetting('last_auth_error', `${new Date().toISOString()} ${detail}`).catch(() => {});
+      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET ?? (discordEnabled ? undefined : 'modo-demo-sin-secreto'),
