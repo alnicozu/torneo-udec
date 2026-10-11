@@ -384,3 +384,5 @@ a.contact-card:hover { transform: translateY(-2px); filter: brightness(1.08); }
 .fee-l { font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); }
 .fee-n { font-family: var(--display); font-size: 40px; line-height: 1; color: var(--gold); }
 .fee-inline { display: inline-block; margin-left: 10px; padding: 2px 10px; font-size: 20px; vertical-align: 4px; color: #1a1300; background: var(--gold); clip-path: var(--cut); }
+.fee-sub { display: block; margin-top: 4px; font-size: 12px; letter-spacing: .3px; text-transform: none; font-weight: 600; color: #e9d48a; opacity: .85; }
+.fee-n small { font-size: 18px; }
