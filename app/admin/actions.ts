@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getCurrentUser } from '@/lib/auth';
 import { q } from '@/lib/db';
 import { generateBracket, recomputeBracket } from '@/lib/bracket';
-import { getTeams, MIN_ROSTER, setSetting } from '@/lib/data';
+import { getTeams, MIN_ROSTER, removeFromTeam, setSetting } from '@/lib/data';
 
 function back(kind: 'ok' | 'err', msg: string, hash = ''): never {
   revalidatePath('/', 'layout');
@@ -81,4 +81,20 @@ export async function deleteTeam(fd: FormData) {
   await q('update users set team_id=null where team_id=$1', [id]);
   await q('delete from teams where id=$1', [id]);
   back('ok', 'Equipo eliminado.', '#equipos');
+}
+
+export async function adminRemoveFromTeam(fd: FormData) {
+  await requireAdmin();
+  const id = String(fd.get('user_id') ?? '');
+  await removeFromTeam(id);
+  back('ok', 'Jugador quitado de su equipo.', '#jugadores');
+}
+
+/** Borra el perfil del jugador. Puede volver a entrar con Discord cuando quiera. */
+export async function adminDeletePlayer(fd: FormData) {
+  await requireAdmin();
+  const id = String(fd.get('user_id') ?? '');
+  await removeFromTeam(id);
+  await q('delete from users where id=$1', [id]);
+  back('ok', 'Jugador eliminado. Si vuelve a entrar con Discord, empieza con un perfil nuevo.', '#jugadores');
 }

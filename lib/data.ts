@@ -140,3 +140,30 @@ export function formatWhen(v: string | null) {
   const date = `${days[d.getUTCDay()]} ${+m[3]} ${months[+m[2] - 1]}`;
   return m[4] ? `${date} · ${m[4]}:${m[5]}` : date;
 }
+
+/**
+ * Saca a un jugador de su equipo. Si era capitán, la capitanía pasa al jugador
+ * más antiguo; si el equipo queda vacío y no está en el cuadro, se elimina.
+ */
+export async function removeFromTeam(userId: string) {
+  const [u] = await q('select team_id from users where id=$1', [userId]);
+  if (!u?.team_id) return;
+  const [t] = await q('select * from teams where id=$1', [u.team_id]);
+  await q('update users set team_id=null where id=$1', [userId]);
+  if (!t) return;
+  const [next] = await q('select id from users where team_id=$1 order by created_at limit 1', [t.id]);
+  if (next) {
+    if (t.captain_id === userId) await q('update teams set captain_id=$2 where id=$1', [t.id, next.id]);
+  } else {
+    const [{ n }] = await q('select count(*)::int as n from matches where team1_id=$1 or team2_id=$1', [t.id]);
+    if (n === 0) await q('delete from teams where id=$1', [t.id]);
+  }
+}
+
+export async function getAllUsers(): Promise<(User & { team_name: string | null; team_tag: string | null; is_captain: boolean })[]> {
+  return q(
+    `select u.*, t.name as team_name, t.tag as team_tag, (t.captain_id = u.id) as is_captain
+     from users u left join teams t on t.id = u.team_id
+     order by t.name nulls last, lower(u.name)`
+  );
+}

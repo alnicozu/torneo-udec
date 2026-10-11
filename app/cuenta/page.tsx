@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import Avatar from '@/components/Avatar';
 import { getCurrentUser } from '@/lib/auth';
 import { q } from '@/lib/db';
-import { getSettings, getTeam, getUser, MAX_ROSTER, MIN_ROSTER, RANKS, ROLES } from '@/lib/data';
+import { getSettings, getTeam, getUser, upsertUser, MAX_ROSTER, MIN_ROSTER, RANKS, ROLES } from '@/lib/data';
 import { createTeam, joinTeam, kickMember, leaveTeam, newInviteCode, updateProfile } from './actions';
 
 export const metadata = { title: 'Mi cuenta · Torneo 5vs5 UdeC 2026' };
@@ -11,7 +11,12 @@ export const metadata = { title: 'Mi cuenta · Torneo 5vs5 UdeC 2026' };
 export default async function CuentaPage({ searchParams }: { searchParams: { ok?: string; err?: string } }) {
   const session = await getCurrentUser();
   if (!session) redirect('/ingresar');
-  const [user, settings] = await Promise.all([getUser(session.id), getSettings()]);
+  let [user, settings] = await Promise.all([getUser(session.id), getSettings()]);
+  if (!user) {
+    // Un admin borró este perfil: se crea uno nuevo automáticamente.
+    await upsertUser(session.id, session.name ?? 'Jugador', session.image ?? null);
+    user = await getUser(session.id);
+  }
   if (!user) redirect('/ingresar');
   const team = user.team_id ? await getTeam(user.team_id) : null;
   const isCaptain = team?.captain_id === user.id;

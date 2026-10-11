@@ -2,15 +2,17 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { roundName } from '@/lib/bracket';
-import { getMatches, getSettings, getTeams, MIN_ROSTER } from '@/lib/data';
-import { createBracket, deleteBracket, deleteTeam, saveMatch, saveSettings } from './actions';
+import { getAllUsers, getMatches, getSettings, getTeams, MIN_ROSTER } from '@/lib/data';
+import { adminDeletePlayer, adminRemoveFromTeam, createBracket, deleteBracket, deleteTeam, saveMatch, saveSettings } from './actions';
+import ConfirmButton from '@/components/ConfirmButton';
+import Avatar from '@/components/Avatar';
 
 export const metadata = { title: 'Admin · Torneo 5vs5 UdeC 2026' };
 
 export default async function AdminPage({ searchParams }: { searchParams: { ok?: string; err?: string } }) {
   const user = await getCurrentUser();
   if (!user?.isAdmin) redirect('/');
-  const [teams, matches, settings] = await Promise.all([getTeams(), getMatches(), getSettings()]);
+  const [teams, matches, settings, users] = await Promise.all([getTeams(), getMatches(), getSettings(), getAllUsers()]);
   const teamMap = new Map(teams.map((t) => [t.id, t]));
   const rounds = matches.length ? Math.max(...matches.map((m) => m.round)) : 0;
   const full = teams.filter((t) => t.members.length >= MIN_ROSTER).length;
@@ -25,6 +27,7 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
           <a className="btn ghost sm" href="#cuadro">Cuadro</a>
           <a className="btn ghost sm" href="#partidos">Resultados</a>
           <a className="btn ghost sm" href="#equipos">Equipos</a>
+          <a className="btn ghost sm" href="#jugadores">Jugadores</a>
           <a className="btn ghost sm" href="#ajustes">Ajustes</a>
         </div>
       </div>
@@ -114,7 +117,51 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
                     <td><span className={`tag ${t.members.length >= MIN_ROSTER ? 'ok' : 'gold'}`}>{t.members.length}</span></td>
                     <td className="hide-sm" style={{ fontFamily: 'monospace' }}>{t.invite_code}</td>
                     <td style={{ textAlign: 'right' }}>
-                      <form action={deleteTeam}><input type="hidden" name="team_id" value={t.id} /><button className="btn danger sm">Eliminar</button></form>
+                      <form action={deleteTeam}><input type="hidden" name="team_id" value={t.id} /><ConfirmButton message={`¿Eliminar el equipo "${t.name}"? Sus jugadores quedan sin equipo, pero no se borran.`}>Eliminar</ConfirmButton></form>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      <section id="jugadores" className="section" style={{ scrollMarginTop: 90 }}>
+        <h2 className="section-title" style={{ marginBottom: 6 }}>Jugadores ({users.length})</h2>
+        <p className="muted small" style={{ marginTop: 0, marginBottom: 14 }}>
+          <b>Quitar del equipo</b> lo deja como agente libre. <b>Eliminar</b> borra su perfil (Riot ID, rango, equipo), pero no lo bloquea: si vuelve a entrar con Discord, empieza de cero.
+        </p>
+        {users.length === 0 ? <div className="empty">Nadie ha entrado todavía.</div> : (
+          <div className="panel" style={{ overflowX: 'auto' }}>
+            <table className="table">
+              <thead><tr><th>Jugador</th><th>Equipo</th><th className="hide-sm">ID de Discord</th><th></th></tr></thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u.id}>
+                    <td>
+                      <div className="player-cell">
+                        <Avatar src={u.avatar} name={u.name} />
+                        <span>{u.name}<div className="riot">{u.riot_id ?? 'Sin Riot ID'}</div></span>
+                      </div>
+                    </td>
+                    <td>
+                      {u.team_id ? <><span className="tag violet" style={{ marginRight: 6 }}>{u.team_tag}</span>{u.is_captain && <span className="tag gold">Capitán</span>}</> : <span className="muted small">Sin equipo</span>}
+                    </td>
+                    <td className="hide-sm" style={{ fontFamily: 'monospace', fontSize: 12 }}>{u.id}</td>
+                    <td>
+                      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                        {u.team_id && (
+                          <form action={adminRemoveFromTeam}>
+                            <input type="hidden" name="user_id" value={u.id} />
+                            <ConfirmButton className="btn ghost sm" message={`¿Quitar a ${u.name} de ${u.team_name}?`}>Quitar del equipo</ConfirmButton>
+                          </form>
+                        )}
+                        <form action={adminDeletePlayer}>
+                          <input type="hidden" name="user_id" value={u.id} />
+                          <ConfirmButton message={`¿Eliminar a ${u.name}? Se borra su perfil, pero podrá volver a entrar con Discord.`}>Eliminar</ConfirmButton>
+                        </form>
+                      </div>
                     </td>
                   </tr>
                 ))}

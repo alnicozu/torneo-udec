@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getCurrentUser } from '@/lib/auth';
 import { q } from '@/lib/db';
-import { getSettings, getUser, MAX_ROSTER, randomCode, RANKS, ROLES } from '@/lib/data';
+import { getSettings, getUser, MAX_ROSTER, randomCode, RANKS, ROLES, removeFromTeam } from '@/lib/data';
 
 function back(kind: 'ok' | 'err', msg: string): never {
   revalidatePath('/', 'layout');
@@ -76,13 +76,7 @@ export async function leaveTeam() {
   const u = await me();
   if (!u.team_id) back('err', 'No perteneces a ningún equipo.');
   if (await bracketLocked()) back('err', 'El cuadro ya está publicado. Pide a la organización cualquier cambio.');
-  const [t] = await q('select * from teams where id=$1', [u.team_id]);
-  await q('update users set team_id=null where id=$1', [u.id]);
-  if (t && t.captain_id === u.id) {
-    const [next] = await q('select id from users where team_id=$1 order by created_at limit 1', [t.id]);
-    if (next) await q('update teams set captain_id=$2 where id=$1', [t.id, next.id]);
-    else await q('delete from teams where id=$1', [t.id]);
-  }
+  await removeFromTeam(u.id);
   back('ok', 'Saliste del equipo.');
 }
 
