@@ -394,3 +394,22 @@ a.contact-card:hover { transform: translateY(-2px); filter: brightness(1.08); }
 @media (max-width: 600px) {
   .hero-kicker { flex-wrap: wrap; justify-content: center; gap: 4px 8px; font-size: 12px; border-radius: 14px; padding: 6px 12px; }
 }
+
+/* ---------- Imagen de fondo ---------- */
+body { background: var(--bg); }
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(9,10,20,.55) 0%, rgba(9,10,20,.78) 45%, rgba(9,10,20,.93) 100%),
+    url('/fondo.jpg') center 30% / cover no-repeat;
+}
+@media (max-width: 700px) {
+  body::before {
+    background:
+      linear-gradient(180deg, rgba(9,10,20,.5) 0%, rgba(9,10,20,.82) 40%, rgba(9,10,20,.94) 100%),
+      url('/fondo-movil.jpg') 60% 30% / cover no-repeat;
+  }
+}
+.hero { border-bottom-color: transparent; }
+.hero::after { display: none; }
+.footer { background: rgba(9,10,20,.85); }
