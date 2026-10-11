@@ -29,6 +29,7 @@ export default async function Home() {
             {settings.registration_open ? <><b>●</b> Inscripciones abiertas</> : <>Inscripciones cerradas</>}
             <span style={{ opacity: .4 }}>|</span> Inscripción $1.500 por jugador <span style={{ opacity: .4 }}>|</span> Eliminación directa
           </span>
+          <img className="hero-logo" src="/logo.png" alt="Logo Torneo 5vs5 UdeC 2026" />
           <h1>
             Torneo <span className="y">5vs5</span>
             <br />

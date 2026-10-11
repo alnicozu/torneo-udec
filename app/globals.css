@@ -386,3 +386,11 @@ a.contact-card:hover { transform: translateY(-2px); filter: brightness(1.08); }
 .fee-inline { display: inline-block; margin-left: 10px; padding: 2px 10px; font-size: 20px; vertical-align: 4px; color: #1a1300; background: var(--gold); clip-path: var(--cut); }
 .fee-sub { display: block; margin-top: 4px; font-size: 12px; letter-spacing: .3px; text-transform: none; font-weight: 600; color: #e9d48a; opacity: .85; }
 .fee-n small { font-size: 18px; }
+
+/* ---------- Logo ---------- */
+.logo-img { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
+.hero-logo { display: block; width: clamp(170px, 24vw, 260px); height: auto; margin: 22px auto -6px; filter: drop-shadow(0 18px 40px rgba(255,70,85,.25)); }
+.hero h1 { font-size: clamp(46px, 8.5vw, 104px); }
+@media (max-width: 600px) {
+  .hero-kicker { flex-wrap: wrap; justify-content: center; gap: 4px 8px; font-size: 12px; border-radius: 14px; padding: 6px 12px; }
+}

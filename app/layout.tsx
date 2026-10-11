@@ -42,7 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <header className="header">
           <div className="container header-inner">
             <Link href="/" className="logo">
-              <span className="logo-mark">5V5</span>
+              <img className="logo-img" src="/logo-sm.png" alt="Torneo 5vs5" width={40} height={40} />
               <span>TORNEO <span className="y">UDEC</span> 2026</span>
             </Link>
             <Nav />
