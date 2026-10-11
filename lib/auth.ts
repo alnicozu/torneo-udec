@@ -18,6 +18,8 @@ export function isAdminId(id?: string | null) {
 }
 
 export const authOptions: NextAuthOptions = {
+  debug: process.env.NEXTAUTH_DEBUG === '1',
+  logger: { error: (code, meta) => console.error('[next-auth]', code, JSON.stringify(meta)) },
   secret: process.env.NEXTAUTH_SECRET ?? (discordEnabled ? undefined : 'modo-demo-sin-secreto'),
   session: { strategy: 'jwt' },
   pages: { signIn: '/ingresar' },
@@ -46,7 +48,11 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, profile }) {
       const p = profile as any;
       const name = p?.global_name || p?.username || user.name || 'Jugador';
-      await upsertUser(String(user.id), name, user.image ?? null);
+      try {
+        await upsertUser(String(user.id), name, user.image ?? null);
+      } catch (e) {
+        console.error('[auth] No se pudo guardar el usuario', e);
+      }
       return true;
     },
     async jwt({ token, user, profile }) {
