@@ -28,7 +28,9 @@ export const authOptions: NextAuthOptions = {
       // Guarda el último error (sin datos sensibles) para mostrarlo en /ingresar.
       // Una cookie antigua (de antes de cambiar NEXTAUTH_SECRET) no es el error que buscamos.
       if (code !== 'JWT_SESSION_ERROR') {
-        setSetting('last_auth_error', `${new Date().toISOString()} ${detail}`).catch(() => {});
+        const g = globalThis as any;
+        g.__authPending = g.__authPending || [];
+        g.__authPending.push(setSetting('last_auth_error', `${new Date().toISOString()} ${detail}`).catch(() => {}));
       }
     },
   },
