@@ -27,6 +27,10 @@ export default async function CuentaPage({ searchParams }: { searchParams: { ok?
             <div className="eyebrow">Mi cuenta</div>
             <h1 className="title" style={{ fontSize: 44 }}>{user.name}</h1>
             <Link className="link-more" href={`/jugadores/${encodeURIComponent(user.id)}`}>Ver mi perfil público →</Link>
+            <div className="small muted" style={{ marginTop: 6 }}>
+              Tu ID de Discord: <code style={{ color: 'var(--text)' }}>{user.id}</code>
+              {session.isAdmin ? <span className="tag ok" style={{ marginLeft: 8 }}>Admin</span> : null}
+            </div>
           </div>
         </div>
       </div>

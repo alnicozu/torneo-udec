@@ -8,7 +8,7 @@ export const discordEnabled = !!(process.env.DISCORD_CLIENT_ID && process.env.DI
 
 const admins = (process.env.ADMIN_DISCORD_IDS ?? '')
   .split(',')
-  .map((s) => s.trim())
+  .map((s) => s.trim().replace(/^["']|["']$/g, ''))
   .filter(Boolean);
 
 export function isAdminId(id?: string | null) {
