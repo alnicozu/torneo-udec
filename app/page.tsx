@@ -27,7 +27,7 @@ export default async function Home() {
         <div className="container hero-inner">
           <span className="hero-kicker">
             {settings.registration_open ? <><b>●</b> Inscripciones abiertas</> : <>Inscripciones cerradas</>}
-            <span style={{ opacity: .4 }}>|</span> Eliminación directa
+            <span style={{ opacity: .4 }}>|</span> Inscripción $1.500 <span style={{ opacity: .4 }}>|</span> Eliminación directa
           </span>
           <h1>
             Torneo <span className="y">5vs5</span>
@@ -72,7 +72,7 @@ export default async function Home() {
 
         <div className="section" id="inscribete">
           <div className="section-head">
-            <h2 className="section-title">Inscríbete</h2>
+            <h2 className="section-title">Inscríbete <span className="fee-inline">$1.500</span></h2>
             <Link className="link-more" href="/inscripcion">Qué necesitas →</Link>
           </div>
           <ContactCTA settings={settings} />

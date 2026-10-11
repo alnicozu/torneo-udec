@@ -4,6 +4,7 @@ export const REGLAMENTO: { id: string; title: string; items: string[] }[] = [
     id: 'inscripcion',
     title: 'Inscripción',
     items: [
+      'El valor de la inscripción es de $1.500. La inscripción se confirma una vez realizado el pago.',
       'Cada jugador debe entrar a la página con su cuenta de Discord y completar su Riot ID.',
       'Los equipos son de 5 jugadores titulares y pueden tener hasta 2 suplentes (máximo 7).',
       'El capitán crea el equipo y comparte el código de invitación con sus compañeros.',
