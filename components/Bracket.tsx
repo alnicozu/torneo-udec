@@ -1,5 +1,5 @@
 import { roundName } from '@/lib/bracket';
-import { formatWhen, type Match, type Team } from '@/lib/data';
+import { formatWhen, teamLogoUrl, type Match, type Team } from '@/lib/data';
 
 function BMatch({ m, teams, final }: { m: Match; teams: Map<number, Team>; final?: boolean }) {
   const rows = [
@@ -15,7 +15,7 @@ function BMatch({ m, teams, final }: { m: Match; teams: Map<number, Team>; final
         const state = !t ? 'tbd' : done && !isBye ? (m.winner_id === r.id ? 'win' : 'lose') : isBye ? 'win' : '';
         return (
           <div key={i} className={`bm-row ${state}`}>
-            <span className="tg">{t?.tag ?? ''}</span>
+            <span className="tg">{t?.has_logo ? <img className="bm-logo" src={teamLogoUrl(t)} alt="" /> : t?.tag ?? ''}</span>
             <span className="nm">{t ? <a href={`/equipos/${t.id}`}>{t.name}</a> : isBye ? 'Libre (bye)' : 'Por definir'}</span>
             <span className="sc">{done && !isBye ? r.sc ?? 0 : ''}</span>
           </div>

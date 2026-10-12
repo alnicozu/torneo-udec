@@ -4,7 +4,9 @@ import Avatar from '@/components/Avatar';
 import { getCurrentUser } from '@/lib/auth';
 import { q } from '@/lib/db';
 import { getSettings, getTeam, getUser, upsertUser, MAX_ROSTER, MIN_ROSTER, RANKS, ROLES } from '@/lib/data';
-import { createTeam, joinTeam, kickMember, leaveTeam, newInviteCode, updateProfile } from './actions';
+import { createTeam, joinTeam, kickMember, leaveTeam, newInviteCode, removeTeamLogo, updateProfile, uploadTeamLogo } from './actions';
+import TeamBadge from '@/components/TeamBadge';
+import LogoUploader from '@/components/LogoUploader';
 
 export const metadata = { title: 'Mi cuenta · Torneo 5vs5 UdeC 2026' };
 
@@ -76,7 +78,7 @@ export default async function CuentaPage({ searchParams }: { searchParams: { ok?
         {team ? (
           <>
             <div className="team-top" style={{ marginTop: 16 }}>
-              <div className="team-badge">{team.tag}</div>
+              <TeamBadge team={team} />
               <div>
                 <Link href={`/equipos/${team.id}`} className="team-name-lg">{team.name}</Link>
                 <div className="small muted">
@@ -85,6 +87,17 @@ export default async function CuentaPage({ searchParams }: { searchParams: { ok?
                 </div>
               </div>
             </div>
+
+            {isCaptain && (
+              <div style={{ marginTop: 20 }}>
+                <div className="field"><label>Logo del equipo</label></div>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', marginTop: 6 }}>
+                  <LogoUploader key={team.logo_v ?? 0} action={uploadTeamLogo} />
+                  {team.has_logo && <form action={removeTeamLogo}><button className="btn danger sm">Quitar logo</button></form>}
+                </div>
+                <p className="muted small" style={{ marginTop: 6 }}>Cuadrado y con fondo transparente se ve mejor. Se achica solo.</p>
+              </div>
+            )}
 
             {isCaptain && (
               <div style={{ marginTop: 20 }}>

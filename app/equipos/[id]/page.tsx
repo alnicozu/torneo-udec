@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Avatar from '@/components/Avatar';
+import TeamBadge from '@/components/TeamBadge';
 import MatchRow from '@/components/MatchRow';
 import { getMatches, getTeam, getTeams } from '@/lib/data';
 import { roundName } from '@/lib/bracket';
@@ -21,7 +22,7 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
       <div className="page-head">
         <Link href="/equipos" className="link-more">← Equipos</Link>
         <div className="profile-head" style={{ marginTop: 18 }}>
-          <div className="team-badge xl">{team.tag}</div>
+          <TeamBadge team={team} size="xl" />
           <div>
             <h1 className="title" style={{ marginTop: 0 }}>{team.name}</h1>
             <div className="muted" style={{ marginTop: 8 }}>{team.members.length} jugadores · {wins}V – {losses}D</div>

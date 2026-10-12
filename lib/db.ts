@@ -29,6 +29,8 @@ const SCHEMA = [
     invite_code text not null unique,
     created_at timestamptz not null default now()
   )`,
+  `alter table teams add column if not exists logo text`,
+  `alter table teams add column if not exists logo_v int not null default 0`,
   `create table if not exists matches (
     id serial primary key,
     round int not null,

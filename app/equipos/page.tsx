@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Avatar from '@/components/Avatar';
+import TeamBadge from '@/components/TeamBadge';
 import { getTeams, MIN_ROSTER } from '@/lib/data';
 
 export const metadata = { title: 'Equipos · Torneo 5vs5 UdeC 2026' };
@@ -22,7 +23,7 @@ export default async function EquiposPage() {
             return (
               <Link key={t.id} href={`/equipos/${t.id}`} className="panel team-card">
                 <div className="team-top">
-                  <div className="team-badge">{t.tag}</div>
+                  <TeamBadge team={t} />
                   <div style={{ minWidth: 0 }}>
                     <div className="team-name-lg">{t.name}</div>
                     <div className="small muted">{t.members.length} jugadores</div>

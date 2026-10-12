@@ -12,9 +12,23 @@ import { isDemo } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
+const SITE_URL = process.env.NEXTAUTH_URL || 'https://torneo-udec.vercel.app';
+const DESCRIPTION = 'Torneo 5vs5 de eliminación directa. 1er lugar $50.000 · 2do $35.000 · 3er $25.000. Inscripción $7.500 por equipo.';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'Torneo 5vs5 UdeC 2026',
-  description: 'Torneo 5vs5 UdeC 2026 — cuadro, equipos, jugadores, calendario e inscripciones.',
+  description: DESCRIPTION,
+  openGraph: {
+    title: 'Torneo 5vs5 UdeC 2026',
+    description: DESCRIPTION,
+    url: '/',
+    siteName: 'Torneo 5vs5 UdeC 2026',
+    locale: 'es_CL',
+    type: 'website',
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'Torneo 5vs5 UdeC 2026' }],
+  },
+  twitter: { card: 'summary_large_image', title: 'Torneo 5vs5 UdeC 2026', description: DESCRIPTION, images: ['/og.jpg'] },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -37,6 +51,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {isDemo && (
           <div className="demo-bar">
             Modo demo: los datos son de ejemplo y se reinician. Conecta la base de datos y Discord para usarla de verdad.
+          </div>
+        )}
+        {settings.announcement && (
+          <div className="announce-bar">
+            <div className="container announce-inner">
+              <span className="announce-tag">Anuncio</span>
+              <span>{settings.announcement}</span>
+            </div>
           </div>
         )}
         <header className="header">

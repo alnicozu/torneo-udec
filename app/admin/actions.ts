@@ -18,7 +18,7 @@ async function requireAdmin() {
 export async function saveSettings(fd: FormData) {
   await requireAdmin();
   await setSetting('registration_open', fd.get('registration_open') ? '1' : '0');
-  for (const k of ['stream_channel', 'discord_invite', 'instagram', 'facebook', 'x', 'tiktok', 'whatsapp']) {
+  for (const k of ['stream_channel', 'discord_invite', 'instagram', 'facebook', 'x', 'tiktok', 'whatsapp', 'announcement']) {
     await setSetting(k, String(fd.get(k) ?? '').trim());
   }
   back('ok', 'Ajustes guardados.');
@@ -71,6 +71,12 @@ export async function saveMatch(fd: FormData) {
   await q('update matches set score1=$2, score2=$3, scheduled_at=$4 where id=$1', [id, s1, s2, when]);
   await recomputeBracket(q);
   back('ok', 'Partido actualizado.', '#partidos');
+}
+
+export async function adminRemoveTeamLogo(fd: FormData) {
+  await requireAdmin();
+  await q('update teams set logo=null, logo_v=logo_v+1 where id=$1', [Number(fd.get('team_id'))]);
+  back('ok', 'Logo quitado.', '#equipos');
 }
 
 export async function deleteTeam(fd: FormData) {

@@ -3,9 +3,10 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { roundName } from '@/lib/bracket';
 import { getAllUsers, getMatches, getRegCodes, getSettings, getTeams, MIN_ROSTER } from '@/lib/data';
-import { adminDeletePlayer, adminRemoveFromTeam, createRegCode, deleteRegCode, createBracket, deleteBracket, deleteTeam, saveMatch, saveSettings } from './actions';
+import { adminDeletePlayer, adminRemoveFromTeam, adminRemoveTeamLogo, createRegCode, deleteRegCode, createBracket, deleteBracket, deleteTeam, saveMatch, saveSettings } from './actions';
 import ConfirmButton from '@/components/ConfirmButton';
 import Avatar from '@/components/Avatar';
+import TeamBadge from '@/components/TeamBadge';
 
 export const metadata = { title: 'Admin · Torneo 5vs5 UdeC 2026' };
 
@@ -25,6 +26,7 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
         <div className="eyebrow">Organización</div>
         <h1 className="title">Panel de admin</h1>
         <div className="tabs-inline" style={{ marginTop: 16 }}>
+          <a className="btn ghost sm" href="#ajustes">Anuncio</a>
           <a className="btn ghost sm" href="#codigos">Códigos</a>
           <a className="btn ghost sm" href="#cuadro">Cuadro</a>
           <a className="btn ghost sm" href="#partidos">Resultados</a>
@@ -152,11 +154,16 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
               <tbody>
                 {teams.map((t) => (
                   <tr key={t.id}>
-                    <td><Link href={`/equipos/${t.id}`} style={{ fontWeight: 700 }}><span className="tag violet" style={{ marginRight: 8 }}>{t.tag}</span>{t.name}</Link></td>
+                    <td><Link href={`/equipos/${t.id}`} style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10 }}><span className="badge-sm"><TeamBadge team={t} /></span>{t.name}</Link></td>
                     <td><span className={`tag ${t.members.length >= MIN_ROSTER ? 'ok' : 'gold'}`}>{t.members.length}</span></td>
                     <td className="hide-sm" style={{ fontFamily: 'monospace' }}>{t.invite_code}</td>
                     <td style={{ textAlign: 'right' }}>
+                      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                      {t.has_logo && (
+                        <form action={adminRemoveTeamLogo}><input type="hidden" name="team_id" value={t.id} /><ConfirmButton className="btn ghost sm" message={`¿Quitar el logo de "${t.name}"?`}>Quitar logo</ConfirmButton></form>
+                      )}
                       <form action={deleteTeam}><input type="hidden" name="team_id" value={t.id} /><ConfirmButton message={`¿Eliminar el equipo "${t.name}"? Sus jugadores quedan sin equipo, pero no se borran.`}>Eliminar</ConfirmButton></form>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -213,6 +220,10 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
       <section id="ajustes" className="section panel pad" style={{ scrollMarginTop: 90 }}>
         <h2 className="section-title" style={{ fontSize: 22 }}>Ajustes</h2>
         <form key={String(settings.registration_open)} action={saveSettings} style={{ marginTop: 14 }}>
+          <div className="field" style={{ marginBottom: 16 }}>
+            <label htmlFor="announcement">Anuncio (aparece arriba en todas las páginas · déjalo vacío para ocultarlo)</label>
+            <input className="input" id="announcement" name="announcement" maxLength={200} placeholder="Ej: Hoy 19:00 se juega la final · ¡No te la pierdas en En vivo!" defaultValue={settings.announcement} />
+          </div>
           <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontWeight: 600, marginBottom: 16 }}>
             <input type="checkbox" name="registration_open" defaultChecked={settings.registration_open} /> Inscripciones abiertas
           </label>

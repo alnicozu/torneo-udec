@@ -23,6 +23,8 @@ export type Team = {
   tag: string;
   captain_id: string;
   invite_code: string;
+  has_logo?: boolean;
+  logo_v?: number;
   members: User[];
 };
 export type Match = {
@@ -62,15 +64,20 @@ export async function getPlayers(): Promise<(User & { team_name: string | null; 
 }
 
 // ---------- Equipos ----------
+// No traemos la imagen del logo (es pesada); solo si existe y su versión.
+const TEAM_COLS = 'id, name, tag, captain_id, invite_code, created_at, logo_v, (logo is not null) as has_logo';
+export function teamLogoUrl(t: { id: number; logo_v?: number }) {
+  return `/api/team-logo/${t.id}?v=${t.logo_v ?? 0}`;
+}
 export async function getTeams(): Promise<Team[]> {
   const [teams, members] = await Promise.all([
-    q('select * from teams order by created_at, id'),
+    q(`select ${TEAM_COLS} from teams order by created_at, id`),
     q('select * from users where team_id is not null order by created_at'),
   ]);
   return teams.map((t) => ({ ...t, members: members.filter((m) => m.team_id === t.id) }));
 }
 export async function getTeam(id: number): Promise<Team | null> {
-  const rows = await q('select * from teams where id=$1', [id]);
+  const rows = await q(`select ${TEAM_COLS} from teams where id=$1`, [id]);
   if (!rows[0]) return null;
   const members = await q('select * from users where team_id=$1 order by created_at', [id]);
   return { ...rows[0], members };
@@ -91,6 +98,7 @@ export type Settings = {
   x: string;
   tiktok: string;
   whatsapp: string;
+  announcement: string;
 };
 export async function getSettings(): Promise<Settings> {
   const rows = await q('select key, value from settings');
@@ -104,6 +112,7 @@ export async function getSettings(): Promise<Settings> {
     x: m.x ?? '',
     tiktok: m.tiktok ?? '',
     whatsapp: m.whatsapp ?? '',
+    announcement: m.announcement ?? '',
   };
 }
 export async function setSetting(key: string, value: string) {

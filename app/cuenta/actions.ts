@@ -109,3 +109,24 @@ export async function newInviteCode() {
   await q('update teams set invite_code=$2 where id=$1', [t.id, randomCode()]);
   back('ok', 'Código nuevo generado. El anterior ya no sirve.');
 }
+
+const LOGO_RE = /^data:image\/(webp|png|jpeg);base64,[A-Za-z0-9+/=]+$/;
+
+export async function uploadTeamLogo(fd: FormData) {
+  const u = await me();
+  const [t] = await q('select id, captain_id from teams where id=$1', [u.team_id]);
+  if (!t || t.captain_id !== u.id) back('err', 'Solo el capitán puede cambiar el logo.');
+  const logo = String(fd.get('logo') ?? '');
+  if (!LOGO_RE.test(logo)) back('err', 'Elige una imagen PNG, JPG o WEBP.');
+  if (logo.length > 400_000) back('err', 'La imagen es muy pesada. Prueba con otra más simple.');
+  await q('update teams set logo=$2, logo_v=logo_v+1 where id=$1', [t.id, logo]);
+  back('ok', 'Logo del equipo actualizado.');
+}
+
+export async function removeTeamLogo() {
+  const u = await me();
+  const [t] = await q('select id, captain_id from teams where id=$1', [u.team_id]);
+  if (!t || t.captain_id !== u.id) back('err', 'Solo el capitán puede cambiar el logo.');
+  await q('update teams set logo=null, logo_v=logo_v+1 where id=$1', [t.id]);
+  back('ok', 'Logo quitado.');
+}

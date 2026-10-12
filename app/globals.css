@@ -413,3 +413,15 @@ body::before {
 .hero { border-bottom-color: transparent; }
 .hero::after { display: none; }
 .footer { background: rgba(9,10,20,.85); }
+
+/* ---------- Barra de anuncios ---------- */
+.announce-bar { background: linear-gradient(90deg, #ff4655, #c2185b); color: #fff; font-weight: 700; font-size: 14px; }
+.announce-inner { display: flex; align-items: center; justify-content: center; gap: 10px; padding-top: 9px; padding-bottom: 9px; text-align: center; }
+.announce-tag { flex: none; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 5px; background: rgba(0,0,0,.25); }
+@media (max-width: 600px) { .announce-inner { font-size: 13px; } }
+
+/* ---------- Logos de equipo ---------- */
+.team-logo { width: 52px; height: 52px; flex: none; object-fit: contain; border-radius: 10px; background: rgba(255,255,255,.04); }
+.team-logo.xl { width: 96px; height: 96px; border-radius: 14px; }
+.bm-logo { width: 22px; height: 22px; object-fit: contain; display: block; }
+.badge-sm .team-badge, .badge-sm .team-logo { width: 32px; height: 32px; font-size: 11px; }
