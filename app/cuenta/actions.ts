@@ -40,7 +40,7 @@ export async function createTeam(fd: FormData) {
   if (u.team_id) back('err', 'Ya perteneces a un equipo.');
   if (!u.riot_id) back('err', 'Primero agrega tu Riot ID en tu perfil.');
   const regCode = normalizeRegCode(String(fd.get('reg_code') ?? ''));
-  if (!regCode) back('err', 'Necesitas un código de inscripción. Se entrega al pagar la inscripción.');
+  if (!regCode) back('err', 'Necesitas un código de inscripción. Pídelo gratis por WhatsApp o Instagram (sección Inscripción).');
   const [rc] = await q('select * from reg_codes where code=$1', [regCode]);
   if (!rc) back('err', 'Ese código de inscripción no existe. Revisa que esté bien escrito.');
   if (rc.team_id) back('err', 'Ese código de inscripción ya fue usado por otro equipo.');

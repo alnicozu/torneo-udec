@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getMatches, getSettings, getTeams } from '@/lib/data';
 import MatchRow from '@/components/MatchRow';
 import ContactCTA from '@/components/ContactCTA';
+import FreeBanner from '@/components/FreeBanner';
 import { roundName } from '@/lib/bracket';
 
 export default async function Home() {
@@ -27,7 +28,7 @@ export default async function Home() {
         <div className="container hero-inner">
           <span className="hero-kicker">
             {settings.registration_open ? <><b>●</b> Inscripciones abiertas</> : <>Inscripciones cerradas</>}
-            <span style={{ opacity: .4 }}>|</span> Inscripción $7.500 por equipo <span style={{ opacity: .4 }}>|</span> Eliminación directa
+            <span style={{ opacity: .4 }}>|</span> <b style={{ color: 'var(--gold)' }}>Inscripción GRATIS</b> <span style={{ opacity: .4 }}>|</span> Sáb 21 y dom 22 de noviembre
           </span>
           <img className="hero-logo" src="/logo.png" alt="Logo Torneo 5vs5 UdeC 2026" />
           <h1>
@@ -36,8 +37,9 @@ export default async function Home() {
             <span className="y">UdeC</span> 2026
           </h1>
           <p className="lead">Arma tu equipo de cinco, entra con Discord y pelea por el primer lugar. Semifinales y final al mejor de 3.</p>
+          <FreeBanner />
           <div className="hero-cta">
-            <Link className="btn lg" href="/inscripcion">¡Inscríbete ya!</Link>
+            <Link className="btn lg" href="/inscripcion">¡Inscríbete gratis!</Link>
             <Link className="btn ghost lg" href="/cuadro">Ver el cuadro</Link>
           </div>
 
@@ -73,7 +75,7 @@ export default async function Home() {
 
         <div className="section" id="inscribete">
           <div className="section-head">
-            <h2 className="section-title">Inscríbete <span className="fee-inline">$7.500 por equipo</span></h2>
+            <h2 className="section-title">Inscríbete <span className="fee-inline">Gratis · cupos limitados</span></h2>
             <Link className="link-more" href="/inscripcion">Qué necesitas →</Link>
           </div>
           <ContactCTA settings={settings} />
@@ -122,7 +124,7 @@ export default async function Home() {
             <div className="panel step">
               <div className="num">03</div>
               <h3>Crea o únete a un equipo</h3>
-              <p>El capitán paga la inscripción, recibe un código y crea el equipo. Luego comparte el código del equipo con sus compañeros (5 jugadores + 2 suplentes opcionales).</p>
+              <p>El capitán nos escribe, recibe un código de inscripción gratis y crea el equipo. Luego comparte el código del equipo con sus compañeros (5 jugadores + 2 suplentes opcionales).</p>
             </div>
           </div>
         </div>

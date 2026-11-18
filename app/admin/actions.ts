@@ -115,7 +115,7 @@ export async function createRegCode(fd: FormData) {
     if (r.length) break;
     code = newRegCode();
   }
-  back('ok', `Código creado: ${code}. Envíaselo a quien pagó.`, '#codigos');
+  back('ok', `Código creado: ${code}. Envíaselo al capitán del equipo.`, '#codigos');
 }
 
 export async function deleteRegCode(fd: FormData) {

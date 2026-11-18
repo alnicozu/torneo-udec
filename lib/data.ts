@@ -177,7 +177,7 @@ export async function getAllUsers(): Promise<(User & { team_name: string | null;
   );
 }
 
-// ---------- Códigos de inscripción (se entregan a quien pagó) ----------
+// ---------- Códigos de inscripción (se entregan a cada equipo inscrito) ----------
 export type RegCode = { code: string; note: string | null; team_id: number | null; team_name: string | null; created_at: string; used_at: string | null };
 
 export function newRegCode() {

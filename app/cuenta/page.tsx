@@ -146,7 +146,7 @@ export default async function CuentaPage({ searchParams }: { searchParams: { ok?
             <form action={createTeam} className="panel pad">
               <h3 style={{ fontSize: 17 }}>Crear un equipo</h3>
               <p className="muted small" style={{ margin: '4px 0 14px' }}>
-                Necesitas el <b style={{ color: 'var(--text)' }}>código de inscripción</b> que te entregamos al pagar. <Link href="/inscripcion" style={{ color: 'var(--text)', textDecoration: 'underline' }}>¿Cómo lo consigo?</Link>
+                Necesitas el <b style={{ color: 'var(--text)' }}>código de inscripción</b> que te entregamos al inscribirte (es gratis). <Link href="/inscripcion" style={{ color: 'var(--text)', textDecoration: 'underline' }}>¿Cómo lo consigo?</Link>
               </p>
               <div className="field" style={{ marginBottom: 12 }}><label htmlFor="reg_code">Código de inscripción</label><input className="input" id="reg_code" name="reg_code" maxLength={12} placeholder="XXXX-XXXX" required style={{ textTransform: 'uppercase', letterSpacing: 2, fontFamily: 'monospace' }} /></div>
               <div className="field"><label htmlFor="name">Nombre del equipo</label><input className="input" id="name" name="name" maxLength={30} required /></div>
@@ -155,7 +155,7 @@ export default async function CuentaPage({ searchParams }: { searchParams: { ok?
             </form>
             <form action={joinTeam} className="panel pad">
               <h3 style={{ fontSize: 17 }}>Unirme a un equipo</h3>
-              <p className="muted small" style={{ margin: '4px 0 14px' }}>Pídele a tu capitán el código del equipo (6 caracteres). No necesitas pagar aparte.</p>
+              <p className="muted small" style={{ margin: '4px 0 14px' }}>Pídele a tu capitán el código del equipo (6 caracteres). </p>
               <div className="field"><label htmlFor="code">Código del equipo</label><input className="input" id="code" name="code" maxLength={12} placeholder="ABC123" required style={{ textTransform: 'uppercase', letterSpacing: 3 }} /></div>
               <div className="form-actions"><button className="btn">Unirme</button></div>
             </form>

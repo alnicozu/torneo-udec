@@ -4,13 +4,13 @@ export const REGLAMENTO: { id: string; title: string; items: string[] }[] = [
     id: 'inscripcion',
     title: 'Inscripción',
     items: [
-      'El valor de la inscripción es de $7.500 por equipo. La inscripción se confirma una vez realizado el pago.',
+      'La inscripción es gratuita. Los cupos son limitados y se asignan por orden de inscripción.',
+      'Las inscripciones están abiertas hasta el viernes 20 de noviembre a las 23:59. El torneo se juega el sábado 21 y el domingo 22 de noviembre.',
       'Cada jugador debe entrar a la página con su cuenta de Discord y completar su Riot ID.',
       'Los equipos son de 5 jugadores titulares y pueden tener hasta 2 suplentes (máximo 7).',
-      'Al pagar, el capitán recibe un código de inscripción para crear el equipo en la página. Cada código sirve para un solo equipo.',
+      'Al inscribirse, el capitán recibe un código de inscripción para crear el equipo en la página. Cada código sirve para un solo equipo.',
       'Una vez creado el equipo, el capitán comparte el código del equipo con sus compañeros para que se unan.',
       'Un jugador solo puede pertenecer a un equipo durante todo el torneo.',
-      'Las inscripciones cierran cuando la organización publica el cuadro.',
     ],
   },
   {

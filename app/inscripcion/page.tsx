@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ContactCTA from '@/components/ContactCTA';
+import FreeBanner from '@/components/FreeBanner';
 import { getSettings } from '@/lib/data';
 
 export const metadata = { title: 'Inscripción · Torneo 5vs5 UdeC 2026' };
@@ -13,14 +14,11 @@ export default async function InscripcionPage() {
         <h1 className="title">Inscribe a tu equipo</h1>
         <p className="subtitle">
           Escríbenos por WhatsApp o Instagram con el nombre de tu equipo y los Riot ID de los 5 jugadores (más suplentes, si tienen).
-          Te respondemos con los datos para pagar la inscripción ($7.500 por equipo). Cuando pagues, te enviamos un <b>código de inscripción</b> para crear tu equipo en la página.
+          La inscripción es <b>gratis</b>. Te respondemos con un <b>código de inscripción</b> para crear tu equipo en la página. Los cupos son limitados, así que no lo dejes para el final.
         </p>
       </div>
 
-      <div className="fee-box">
-        <span className="fee-l">Valor de inscripción<span className="fee-sub">por equipo ($1.500 por jugador)</span></span>
-        <span className="fee-n">$7.500</span>
-      </div>
+      <div style={{ marginBottom: 14 }}><FreeBanner /></div>
 
       <ContactCTA settings={settings} />
 

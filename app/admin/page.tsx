@@ -46,7 +46,7 @@ export default async function AdminPage({ searchParams }: { searchParams: { ok?:
           Si eliminas un equipo, su código queda libre de nuevo.
         </p>
         <form action={createRegCode} className="form-row" style={{ alignItems: 'end', marginTop: 12 }}>
-          <div className="field"><label htmlFor="note">Nota (opcional)</label><input className="input" id="note" name="note" maxLength={80} placeholder="Ej: pagó Juan por WhatsApp" /></div>
+          <div className="field"><label htmlFor="note">Nota (opcional)</label><input className="input" id="note" name="note" maxLength={80} placeholder="Ej: equipo de Juan (WhatsApp)" /></div>
           <div><button className="btn">Generar código</button></div>
         </form>
         {codes.length > 0 && (
