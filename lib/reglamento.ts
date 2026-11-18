@@ -55,8 +55,8 @@ export const REGLAMENTO: { id: string; title: string; items: string[] }[] = [
     id: 'premios',
     title: 'Premios',
     items: [
-      '1er lugar: $50.000 · 2do lugar: $35.000 · 3er lugar: $25.000.',
-      'Los premios se entregan al capitán del equipo una vez terminado el torneo.',
+      'Hay un único premio de $20.000 para el equipo campeón.',
+      'El premio se entrega al capitán del equipo campeón una vez terminado el torneo.',
     ],
   },
 ];

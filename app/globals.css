@@ -442,3 +442,10 @@ body::before {
 .countdown span { display: block; margin-top: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
 .countdown-done { margin-top: 8px; font-weight: 800; color: #ff8f99; }
 @media (max-width: 480px) { .countdown > div { min-width: 62px; } .countdown b { font-size: 28px; } .free-dates { font-size: 14px; } }
+
+/* ---------- Premio único ---------- */
+.prize-single { max-width: 420px; margin: 40px auto 0; padding: 26px 20px 24px; text-align: center; clip-path: var(--cut);
+  background: linear-gradient(180deg, rgba(255,207,63,.18), rgba(255,207,63,.04)); border: 1px solid rgba(255,207,63,.45); }
+.prize-single .ico { font-size: 38px; line-height: 1; }
+.prize-single .place { font-family: var(--display); text-transform: uppercase; font-size: 20px; letter-spacing: 1px; margin-top: 8px; }
+.prize-single .amount { font-family: var(--display); font-size: clamp(48px, 9vw, 72px); line-height: 1.05; color: var(--gold); text-shadow: 0 0 40px rgba(255,207,63,.25); }

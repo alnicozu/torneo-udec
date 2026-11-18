@@ -43,22 +43,10 @@ export default async function Home() {
             <Link className="btn ghost lg" href="/cuadro">Ver el cuadro</Link>
           </div>
 
-          <div className="prizes">
-            <div className="prize second">
-              <div className="ico">🥈</div>
-              <div className="place">2do lugar</div>
-              <div className="amount">$35.000</div>
-            </div>
-            <div className="prize first">
-              <div className="ico">🏆</div>
-              <div className="place">1er lugar</div>
-              <div className="amount">$50.000</div>
-            </div>
-            <div className="prize third">
-              <div className="ico">🥉</div>
-              <div className="place">3er lugar</div>
-              <div className="amount">$25.000</div>
-            </div>
+          <div className="prize-single">
+            <div className="ico">🏆</div>
+            <div className="place">Premio al equipo campeón</div>
+            <div className="amount">$20.000</div>
           </div>
         </div>
       </section>
@@ -69,7 +57,7 @@ export default async function Home() {
             <div className="panel stat"><div className="n">{teams.length}</div><div className="l">Equipos inscritos</div></div>
             <div className="panel stat"><div className="n">{players}</div><div className="l">Jugadores</div></div>
             <div className="panel stat"><div className="n">{played}<span className="muted" style={{ fontSize: 22 }}>/{real.length || '–'}</span></div><div className="l">Partidos jugados</div></div>
-            <div className="panel stat"><div className="n" style={{ color: 'var(--gold)' }}>$110K</div><div className="l">En premios</div></div>
+            <div className="panel stat"><div className="n" style={{ color: 'var(--gold)' }}>$20.000</div><div className="l">Premio al campeón</div></div>
           </div>
         </div>
 
