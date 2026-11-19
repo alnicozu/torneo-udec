@@ -131,6 +131,22 @@ export function whatsappLink(num: string) {
   return `https://wa.me/${d}?text=${encodeURIComponent(WA_TEXT)}`;
 }
 
+/** "https://instagram.com/cuenta/" o "@cuenta" -> "cuenta". */
+export function instagramHandle(v: string) {
+  const t = (v || '').trim();
+  if (!t) return '';
+  const m = t.match(/instagram\.com\/([A-Za-z0-9._]+)/i);
+  return (m ? m[1] : t.replace(/^@/, '').split(/[/?#\s]/)[0]).trim();
+}
+/** Número de WhatsApp en formato chileno legible: "+56 9 1234 5678". */
+export function whatsappDisplay(num: string) {
+  let d = (num || '').replace(/\D/g, '');
+  if (!d) return '';
+  if (d.length === 9 && d.startsWith('9')) d = '56' + d;
+  if (d.length === 11 && d.startsWith('569')) return `+56 9 ${d.slice(3, 7)} ${d.slice(7)}`;
+  return '+' + d;
+}
+
 export function randomCode(len = 6) {
   const abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let s = '';
