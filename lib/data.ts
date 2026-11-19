@@ -85,7 +85,7 @@ export async function getTeam(id: number): Promise<Team | null> {
 
 // ---------- Partidos ----------
 export async function getMatches(): Promise<Match[]> {
-  return q('select * from matches order by round, third_place, slot');
+  return q('select * from matches where not third_place order by round, slot');
 }
 
 // ---------- Ajustes ----------

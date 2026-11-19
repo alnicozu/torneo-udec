@@ -5,7 +5,6 @@ import type { Q } from './db';
 export const BO_EARLY = 1; // rondas antes de semis
 export const BO_SEMIS = 3;
 export const BO_FINAL = 3;
-export const BO_THIRD = 3; // partido por el 3er lugar (cámbialo a 1 si prefieren)
 
 /** Orden estándar de cabezas de serie: 1 vs último, 2 vs penúltimo, etc. */
 export function seedOrder(size: number): number[] {
@@ -51,12 +50,7 @@ export async function generateBracket(q: Q, teamIds: number[]) {
       );
     }
   }
-  if (rounds >= 2) {
-    await q(
-      'insert into matches (round, slot, best_of, third_place) values ($1, 1, $2, true)',
-      [rounds, BO_THIRD]
-    );
-  }
+  // Sin partido por el 3er lugar: hay un solo premio, para el campeón.
   await recomputeBracket(q);
 }
 
@@ -74,6 +68,7 @@ function decide(m: any): number | null {
  * el ganador, los partidos siguientes que dependían de él se limpian.
  */
 export async function recomputeBracket(q: Q) {
+  await q('delete from matches where third_place');
   const all = await q('select * from matches order by round, third_place, slot');
   if (!all.length) return;
   const rounds = Math.max(...all.map((m) => m.round));

@@ -11,7 +11,7 @@ export default async function CuadroPage() {
       <div className="page-head">
         <div className="eyebrow">Eliminación directa</div>
         <h1 className="title">Cuadro del torneo</h1>
-        <p className="subtitle">Cada partido es al mejor de 1, excepto semifinales, final y 3er lugar, que se juegan al mejor de 3. Desliza hacia el lado para ver todas las rondas.</p>
+        <p className="subtitle">Cada partido es al mejor de 1, excepto semifinales y final, que se juegan al mejor de 3. Desliza hacia el lado para ver todas las rondas.</p>
       </div>
       {matches.length ? (
         <Bracket matches={matches} teams={teamMap} />

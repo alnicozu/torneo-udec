@@ -63,6 +63,5 @@ export async function seedDemo(q: Q) {
   await q('update matches set score1=2, score2=1, scheduled_at=$2 where id=$1', [ms2[0].id, '2026-10-24T18:00']);
   await q('update matches set scheduled_at=$2 where id=$1', [ms2[1].id, '2026-10-24T20:30']);
   await recomputeBracket(q);
-  await q("update matches set scheduled_at='2026-10-31T17:00' where third_place");
   await q("update matches set scheduled_at='2026-10-31T19:30' where round=3 and not third_place");
 }
