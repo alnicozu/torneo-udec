@@ -1,4 +1,5 @@
 import Countdown from './Countdown';
+import Horarios from './Horarios';
 import { CIERRE_INSCRIPCIONES, TEXTO_CIERRE, TEXTO_JUEGO } from '@/lib/evento';
 
 /** Recuadro destacado: inscripción gratis, cupos limitados, fechas y cuenta regresiva. */
@@ -14,6 +15,7 @@ export default function FreeBanner() {
         <div><span className="ico">🎮</span>{TEXTO_JUEGO}</div>
         <div><span className="ico">🖥️</span>Servidor: Santiago</div>
       </div>
+      <Horarios />
       <div className="free-cd-label">El cierre de inscripciones es en</div>
       <Countdown to={CIERRE_INSCRIPCIONES} />
     </div>

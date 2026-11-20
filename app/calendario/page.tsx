@@ -1,3 +1,4 @@
+import Horarios from '@/components/Horarios';
 import MatchRow from '@/components/MatchRow';
 import { roundName } from '@/lib/bracket';
 import { getMatches, getTeams } from '@/lib/data';
@@ -23,7 +24,8 @@ export default async function CalendarioPage() {
       <div className="page-head">
         <div className="eyebrow">Fechas y horarios</div>
         <h1 className="title">Calendario</h1>
-        <p className="subtitle">Horarios de Chile. Los equipos deben estar conectados 15 minutos antes de cada partido.</p>
+        <p className="subtitle">Los horarios de los partidos están en hora de Chile. El torneo se juega el domingo 22 de noviembre entre las 16:00 y las 22:00. Los equipos deben estar conectados 15 minutos antes de cada partido.</p>
+        <div style={{ maxWidth: 560, marginTop: 18 }}><Horarios title="Equivalencia de horario por país" /></div>
       </div>
       {groups.length === 0 ? (
         <div className="empty">El calendario se publicará junto con el cuadro.</div>

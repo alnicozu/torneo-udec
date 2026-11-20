@@ -466,3 +466,12 @@ body::before {
 .contact-card.dc { grid-column: 1 / -1; }
 .contact-card.dc .contact-main { font-size: 26px; }
 @media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Horario por país ---------- */
+.horarios { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: rgba(0,0,0,.28); border: 1px solid var(--line-2); text-align: left; }
+.horarios-t { font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.horarios-g { display: flex; flex-direction: column; gap: 6px; }
+.horarios-r { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.horarios-r .hp { color: #d6d9f2; font-weight: 600; }
+.horarios-r .hh { font-weight: 800; white-space: nowrap; color: var(--text); }
+.horarios-r:first-child .hh { color: var(--gold); }

@@ -5,7 +5,8 @@ export const REGLAMENTO: { id: string; title: string; items: string[] }[] = [
     title: 'Inscripción',
     items: [
       'La inscripción es gratuita. Los cupos son limitados y se asignan por orden de inscripción.',
-      'Las inscripciones están abiertas hasta el sábado 21 de noviembre a las 23:59. El torneo se juega el domingo 22 de noviembre.',
+      'Las inscripciones están abiertas hasta el sábado 21 de noviembre a las 23:59. El torneo se juega el domingo 22 de noviembre, entre las 16:00 y las 22:00 (hora de Chile).',
+      'Horario en otros países: Argentina, Uruguay y Paraguay 16:00 a 22:00 · Bolivia 15:00 a 21:00 · Perú, Ecuador y Colombia 14:00 a 20:00.',
       'Cada jugador debe entrar a la página con su cuenta de Discord y completar su Riot ID.',
       'Los equipos son de 5 jugadores titulares y pueden tener hasta 2 suplentes (máximo 7).',
       'Al inscribirse, el capitán recibe un código de inscripción para crear el equipo en la página. Cada código sirve para un solo equipo.',
