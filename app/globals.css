@@ -456,3 +456,13 @@ body::before {
 .contact-main { display: block; font-weight: 800; font-size: 22px; line-height: 1.25; margin-top: 2px; word-break: break-word; user-select: all; }
 .contact-link { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
 .contact-link:hover { color: var(--text); }
+
+/* ---------- Tarjeta de Discord ---------- */
+.contact-card.dc .contact-ico { background: #5865f2; }
+.contact-card.dc:not(.off) { border-color: rgba(88,101,242,.6); background: linear-gradient(90deg, rgba(88,101,242,.18), var(--panel)); }
+.contact-cta { margin-top: 10px; }
+.contact-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.contact-grid { grid-template-columns: 1fr 1fr; }
+.contact-card.dc { grid-column: 1 / -1; }
+.contact-card.dc .contact-main { font-size: 26px; }
+@media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; } }
