@@ -13,7 +13,7 @@ import { isDemo } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 const SITE_URL = process.env.NEXTAUTH_URL || 'https://torneo-udec.vercel.app';
-const DESCRIPTION = 'Torneo 5vs5 de eliminación directa. Premio de $20.000 al equipo campeón. Inscripción GRATIS · cupos limitados · hasta el viernes 20 de noviembre.';
+const DESCRIPTION = 'Torneo 5vs5 de eliminación directa. Premio de $20.000 al equipo campeón. Inscripción GRATIS · cupos limitados · hasta el sábado 21 de noviembre. Se juega el domingo 22.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

@@ -28,7 +28,7 @@ export default async function Home() {
         <div className="container hero-inner">
           <span className="hero-kicker">
             {settings.registration_open ? <><b>●</b> Inscripciones abiertas</> : <>Inscripciones cerradas</>}
-            <span style={{ opacity: .4 }}>|</span> <b style={{ color: 'var(--gold)' }}>Inscripción GRATIS</b> <span style={{ opacity: .4 }}>|</span> Sáb 21 y dom 22 de noviembre
+            <span style={{ opacity: .4 }}>|</span> <b style={{ color: 'var(--gold)' }}>Inscripción GRATIS</b> <span style={{ opacity: .4 }}>|</span> Domingo 22 de noviembre
           </span>
           <img className="hero-logo" src="/logo.png" alt="Logo Torneo 5vs5 UdeC 2026" />
           <h1>
