@@ -12,6 +12,7 @@ export default function FreeBanner() {
       <div className="free-dates">
         <div><span className="ico">📝</span>{TEXTO_CIERRE}</div>
         <div><span className="ico">🎮</span>{TEXTO_JUEGO}</div>
+        <div><span className="ico">🖥️</span>Servidor: Santiago</div>
       </div>
       <div className="free-cd-label">El cierre de inscripciones es en</div>
       <Countdown to={CIERRE_INSCRIPCIONES} />

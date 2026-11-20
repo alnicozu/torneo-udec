@@ -26,7 +26,7 @@ export const REGLAMENTO: { id: string; title: string; items: string[] }[] = [
     id: 'partidas',
     title: 'Partidas',
     items: [
-      'Las partidas son personalizadas, 5vs5, con las reglas de competitivo (13 rondas para ganar, prórroga activada).',
+      'Las partidas son personalizadas, 5vs5, en el servidor de Santiago, con las reglas de competitivo (13 rondas para ganar, prórroga activada).',
       'La selección de mapas se hace por veto entre capitanes antes de cada partido.',
       'Los equipos deben estar conectados 15 minutos antes del horario publicado.',
       'Si un equipo no se presenta 15 minutos después del horario, pierde por W.O.',
